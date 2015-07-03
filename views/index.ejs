@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <div id="data">
+      <% for(var i=0 ; i < playerData.length ; i++) { %>
+        <div id="<%= playerData[i].id %>">
+          <p class="name"><%= playerData[i].name %></p>
+          <p class="img"><%= playerData[i].img %></p>
+          <p class="number"><%= playerData[i].number %></p>
+        </div>
+      <% } %>
+    </div>
+
+    <canvas id="startingEleven"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/kineticjs/5.2.0/kinetic.js"></script>
+    <script src="/js/indexEM5.js"></script>
+  </body>
+</html>
