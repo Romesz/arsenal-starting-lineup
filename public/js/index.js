@@ -13,7 +13,7 @@ class getData {
   imgs;
   numbers;
   playerData;
-  
+
   /**
   * @method constructor
   */
@@ -67,7 +67,7 @@ class getData {
       // this interferes with the scope of the forEach
     });
 
-    return that.playerData;  
+    return that.playerData;
   }
 }
 
@@ -84,30 +84,78 @@ class prepareData {
   constructor(data) {
     this.data = data;
   }
-  
+
   /**
   * @method textIdView
   * Createing the view based on the number and name
   * @return textValue {Array}
-  */  
+  */
   textIdView() {
-    let textsValue = []; 
+    let textsValue = [];
     for(let value of this.data) {
       textsValue.push(value.number + ' : ' + value.name);
     }
 
     return textsValue;
   }
-  
+
   /**
   * @method coordinates
   * Createing the coordinates for the view
   * @return cooArray {Array}
-  */ 
-  coordinates() {
-    let cooArray = [];
-    // creating the coordinates
-    return cooArray;
+  */
+  coordinates(i, height) {
+    let x, y;
+    switch(i) {
+      case 0:
+        x = 15;
+        y = height / 2 - 50;
+        break;
+      case 1:
+        x = 200;
+        y = 100;
+        break;
+      case 2:
+        x = 180;
+        y = height / 2 - 100;
+        break;
+      case 3:
+        x = 180;
+        y = height / 2;
+        break;
+      case 4:
+        x = 200;
+        y = height - 200;
+        break;
+      case 5:
+        x = 400;
+        y = 100;
+        break;
+      case 6:
+        x = 380;
+        y = height / 2 - 100;
+        break;
+      case 7:
+        x = 380;
+        y = height / 2;
+        break;
+      case 8:
+        x = 400;
+        y = height - 200;
+        break;
+      case 9:
+        x = 550;
+        y = height / 2;
+        break;
+      case 10:
+        x = 550;
+        y = height / 2 - 100;
+        break;
+      default:
+        x = 900;
+        y = 1;
+    }
+    return {'x': x, 'y': y};
   }
 }
 
@@ -119,8 +167,8 @@ var viewClass = new prepareData(data);
 
 var stage = new Kinetic.Stage({
   container: 'startingEleven',
-  width: 600,
-  height: 500
+  width: 1200,
+  height: 600
 });
 
 var layer = new Kinetic.Layer();
@@ -128,11 +176,18 @@ var layer = new Kinetic.Layer();
 var builtNames = viewClass.textIdView();
 builtNames.forEach(function(value, i) {
   let nodeName = value;
+  let x = viewClass.coordinates(i, stage.height()).x;
+  let y = viewClass.coordinates(i, stage.height()).y;
+
+  if(i > 10) {
+    y = (i - 9) * 15;
+  }
+
   nodeName = new Kinetic.Text({
-    x: 15 * i,
-    y: 15 * i,
+    x: x,
+    y: y,
     text: nodeName,
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: 'Calibri',
     fill: 'blue',
     draggable: true
