@@ -1,75 +1,7 @@
 /* jshint esnext: true */
-/* global NodeList, document, console, Kinetic */
+/* global NodeList, document, console, Kinetic, window, async, await, fetch */
 
 NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator]; // polifill for the for..of.. loop
-/**
-* @class getData
-* This class gets the data form backend
-*/
-class getData {
-  data;
-  ids;
-  names;
-  imgs;
-  numbers;
-  playerData;
-
-  /**
-  * @method constructor
-  */
-  constructor() {
-    this.data = document.querySelectorAll('#data div');
-    this.ids = [];
-    this.names = [];
-    this.imgs = [];
-    this.numbers = [];
-    this.playerData = [];
-  }
-
-  /**
-  * @method collectData
-  * collecting the data
-  */
-  collectData() {
-    for(let parentNode of this.data) {
-      //console.log(parentNode);
-      //console.log(parentNode.childNodes);
-      this.ids.push(parentNode.id);
-
-      let childNodes = parentNode.childNodes;
-      for(let childNode of childNodes) {
-        //console.log(childNode);
-        //console.log(childNode.classList);
-        //console.log(childNode.innerHTML);
-
-        if(childNode.classList !== undefined && childNode.classList[0] === 'name') {
-          this.names.push(childNode.innerHTML);
-        }
-        else if(childNode.classList !== undefined && childNode.classList[0] === 'img') {
-          this.imgs.push(childNode.innerHTML);
-        }
-        else if(childNode.classList !== undefined && childNode.classList[0] === 'number') {
-          this.numbers.push(childNode.innerHTML);
-        }
-      }
-    }  
-  }
- 
-  /**
-  * @method returnData
-  * retunrning the data
-  * @return that.playerData {Array}
-  */
-  returnData() {
-    let that = this;
-    this.names.forEach(function(e, i) {
-      that.playerData.push({'id': that.ids[i], 'name': that.names[i], 'img': that.imgs[i], 'number': that.numbers[i]});
-      // this interferes with the scope of the forEach
-    });
-
-    return that.playerData;
-  }
-}
 
 /**
 * @class prepareData
@@ -159,41 +91,45 @@ class prepareData {
   }
 }
 
-var getDataClass = new getData();
-getDataClass.collectData();
-var data = getDataClass.returnData();
-
-var viewClass = new prepareData(data);
-
-var stage = new Kinetic.Stage({
-  container: 'startingEleven',
-  width: 1200,
-  height: 600
-});
-
-var layer = new Kinetic.Layer();
-
-var builtNames = viewClass.textIdView();
-builtNames.forEach(function(value, i) {
-  let nodeName = value;
-  let x = viewClass.coordinates(i, stage.height()).x;
-  let y = viewClass.coordinates(i, stage.height()).y;
-
-  if(i > 10) {
-    y = (i - 9) * 15;
-  }
-
-  nodeName = new Kinetic.Text({
-    x: x,
-    y: y,
-    text: nodeName,
-    fontSize: 14,
-    fontFamily: 'Calibri',
-    fill: 'blue',
-    draggable: true
+(async function() {
+  let data;
+  await fetch('/data').then(function(response) {
+    return response.json();
+  }).then(function(toJson) {
+    data = toJson.playerData;
   });
+    let viewClass = new prepareData(data);
 
-  layer.add(nodeName);
-});
+    let stage = new Kinetic.Stage({
+      container: 'startingEleven',
+      width: 1200,
+      height: 600
+    });
 
-stage.add(layer);
+    let layer = new Kinetic.Layer();
+
+    let builtNames = viewClass.textIdView();
+    builtNames.forEach(function(value, i) {
+      let nodeName = value;
+      let x = viewClass.coordinates(i, stage.height()).x;
+      let y = viewClass.coordinates(i, stage.height()).y;
+
+      if(i > 10) {
+        y = (i - 9) * 15;
+      }
+
+      nodeName = new Kinetic.Text({
+        x: x,
+        y: y,
+        text: nodeName,
+        fontSize: 14,
+        fontFamily: 'Calibri',
+        fill: 'blue',
+        draggable: true
+      });
+
+      layer.add(nodeName);
+    });
+
+    stage.add(layer);
+}());

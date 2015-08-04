@@ -1,48 +1,31 @@
-/* global require, __dirname, console */
+/* global require, __dirname, console, setTimeout */
 
 var express = require('express');
-var request = require('request');
-var cheerio = require('cheerio');
+var async = require('async');
+var requestFn = require('./models/requestHelper');
 
 var app = express();
 
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
-app.get('*', function(req, res) {
+var c = function(data, res) {
+  if(data !== undefined) {
+    res.json({playerData: data});
+  }
+};
 
-  var playerData = [];
-  var playerName = [];
-  var playerImg = [];
-  var playerNumber = [];
-  var urlArsenalPage = 'http://www.arsenal.com/first-team/players';
+app.get('/', function(req, res) {
+  res.render('index');
+});
 
-  request(urlArsenalPage, function(err, response, body) {
-    if(err || response.statusCode !== 200)
-      throw(err);
+app.get('/data', function(req, res) {
+  requestFn.dataRequest(c, res);
+});
 
-    var $ = cheerio.load(body);
-
-    $('figure a figcaption').each(function(i, node) {
-      var name = $(node).html();
-      playerName.push(name);
-    });
-    $('figure a img').each(function(i, node) {
-      var img = urlArsenalPage + $(node).attr('src');
-      playerImg.push(img);
-    });
-    $('figure a span.number').each(function(i, node) {
-      var number = $(node).html();
-      playerNumber.push(number);
-    });
-
-    playerName.forEach(function(e, i) {
-      playerData.push({'id': i, 'name': playerName[i], 'img': playerImg[i], 'number': playerNumber[i]});
-    });
-
-    res.render('index', {playerData: playerData});
-  });
-
+app.use(function(err, req, res, next) {
+  console.log(err.stack);
+  res.status(500).send('Server Error');
 });
 
 console.log('Server is happily listening on port 3000');
