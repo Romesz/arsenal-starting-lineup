@@ -2,13 +2,14 @@
 
 var request = require('request');
 var cheerio = require('cheerio');
+var playersSchema = require('../models/playersSchema');
 
-module.exports.dataRequest = function(callback, res) {
- var playerData = [];
+module.exports.writePlayerDB = function() {
  var playerName = [];
  var playerImg = [];
  var playerNumber = [];
  var urlArsenalPage = 'http://www.arsenal.com/first-team/players';
+
 
  request(urlArsenalPage, function(err, response, body) {
    if(err || response.statusCode !== 200)
@@ -29,10 +30,26 @@ module.exports.dataRequest = function(callback, res) {
      playerNumber.push(number);
    });
 
-   playerName.forEach(function(e, i) {
-     playerData.push({'id': i, 'name': playerName[i], 'img': playerImg[i], 'number': playerNumber[i]});
+   playersSchema.remove({}, function(err) {
+     if(err) throw(err);
+
+     console.log('removed all');
    });
 
-   callback(playerData, res);
+   playerName.forEach(function(e, i) {
+    var players = new playersSchema({
+     name: playerName[i],
+     img: playerImg[i],
+     number: playerNumber[i]
+    });
+
+    players.save(function(err) {
+     if(err) throw(err);
+
+     console.log(playerName[i] + ' saved to database');
+    });
+   });
+
+   //callback(playerData, res);
  });
 };

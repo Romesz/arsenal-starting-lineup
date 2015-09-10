@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "author": "Romano Firtermaiszter <firtermaiszter.romano@gmail.com>",
   "main": "app.js",
+  "scripts": {
+    "build": "node babel.js && node app.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Romesz/arsenal-starting-lineup.git"
@@ -19,7 +22,10 @@
     "ejs": "^2.3.2",
     "browserify": "^10.2.0",
     "babelify": "^6.1.2",
-    "babel-runtime": "^5.8.20"
+    "babel-runtime": "^5.8.20",
+    "node-schedule": "^0.2.9",
+    "mongoose": "^4.1.6",
+    "dotenv": "^1.2.0"
   },
   "license": "MIT"
 }
