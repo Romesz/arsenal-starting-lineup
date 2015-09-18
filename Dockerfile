@@ -1,5 +1,5 @@
 FROM node:4.0.0-onbuild
-COPY ./
+COPY . /
 WORKDIR /
 
 EXPOSE 8888

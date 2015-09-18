@@ -8,6 +8,13 @@ To start the project:
 * node app.js or node run-script build (builds babel and runs express server)
 * localhost:3000
 
+[Docker]
+  Use the app with Docker
+  * install Docker
+  * docker build -t Arsenal11 .
+  * docker run Arsenal11
+
+
 Js file (for the client side) generated with babel (Convert Ecmascript 6 to 5):
 * node babel.js
 
