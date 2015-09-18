@@ -49,5 +49,5 @@ app.use(function(err, req, res, next) {
   res.status(500).send('Server Error');
 });
 
-console.log('Server is happily listening on port 3000');
-app.listen(3000);
+console.log('Server is happily listening on port 8888');
+app.listen(8888);

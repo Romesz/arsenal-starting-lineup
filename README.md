@@ -6,13 +6,13 @@ To start the project:
 * npm install
 * create a .env file in the root and define the route to your DB server like DB_LINK=fake_server_route
 * node app.js or node run-script build (builds babel and runs express server)
-* localhost:3000
+* localhost:8080
 
 [Docker]
   Use the app with Docker
   * install Docker
   * docker build -t arsenal-eleven .
-  * docker run arsenal-eleven
+  * docker run -p 8888:8888 -it arsenal-eleven
 
 
 Js file (for the client side) generated with babel (Convert Ecmascript 6 to 5):
