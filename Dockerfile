@@ -4,4 +4,4 @@ WORKDIR /
 
 EXPOSE 8888
 RUN npm install
-CMD npm build
+CMD npm run-script build
