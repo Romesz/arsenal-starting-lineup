@@ -11,8 +11,8 @@ To start the project:
 [Docker]
   Use the app with Docker
   * install Docker
-  * docker build -t Arsenal11 .
-  * docker run Arsenal11
+  * docker build -t arsenal-eleven .
+  * docker run arsenal-eleven
 
 
 Js file (for the client side) generated with babel (Convert Ecmascript 6 to 5):
